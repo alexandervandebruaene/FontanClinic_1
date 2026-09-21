@@ -1,0 +1,17 @@
+# Never commit patient data
+*.xlsx
+*.xls
+*.docx
+*.csv
+private/
+data/
+exports/
+real_reports/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+__pycache__/
+node_modules/

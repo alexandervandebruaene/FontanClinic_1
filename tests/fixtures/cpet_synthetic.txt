@@ -1,0 +1,127 @@
+Inspanningsecho 
+
+* gewicht: 62.0kg
+* lengte: 168.0cm
+* BMI: 22.0
+* BSA: 1.705m²
+
+Indicatie: fontan circulatie
+----------
+Thuistherapie:
+---------------
+
+* Asaflow, 80 mg
+* Bisoprolol, 2.5 mg
+
+Biochemie:
+----------
+
+* Hb: 15.2 g/dl
+
+Basismetingen:
+---------------
+
+* BSA: 1.705 m²
+* onderliggend ritme: sinusritme
+* LVOTD: 2.0 cm
+* IVSd: 9 mm
+* LVEDD: 50 mm
+* PWd: 8 mm
+* RWT: 0.32
+* LVMI: 90
+
+Kleppen:
+
+* Tricuspedalis insuff: geen TI / stenose: geen stenose
+* Pulmonalis insuff: geen PI / stenose: geen stenose
+* Mitralis insuff: MI 1/4 / stenose: geen stenose
+* Aorta insuff: geen AI / stenose: geen stenose
+* H2FPEF score: 1
+
+CPET:
+-----
+
+* Protocol aanvang: 10 Watt
+* Protocol slope: 10 Watt/min
+* Piek belasting: 95 Watt
+
+Algemeen REST LOW PEAK
+|--------------|-----------|----------|---------|
+| HR (bpm) | 70 | 88 | 150
+| VO2 (ml) | 300 | 520 | 1300
+| RER | 0.82 | 0.85 | 1.12
+| VCO2 (ml/min)| 246 | 442 | 1456
+| O2/HR (ml) | 4.3 | 5.9 | 8.7
+| HR % pred | | | 79
+| VO2 gew | | | 21.0
+| Saturatie O2 | 94 | | 87
+WASSERMAN GLASER
+Peak VO2 (% predicted): 70.10 72.40
+Pulmonaal
+|-------------------|------------|-------------------|------------|
+| FEV1 | 2.8 | Peak VE | 62
+| FEV1 %pred | 85 | MVV | 112
+| FVC | 3.3 | Peak VE/MVV | 0.55
+| Tiffeneau index | 0.85 | VE/VCO2 slope | 33.10
+| Rest PETCO2 | 30.10 | Peak PETCO2 | 34.00
+Inspanningsecho metingen:
+-------------------------
+______________________________________
+| REST | LOW | PEAK |
+|----------------------|------------|-----------|-----------|
+| HR (bpm) | 70 88 150
+| RER | 0.82 0.85 1.12
+| Belasting (Watt) | 0 30 95
+| BD systolisch (mmHg) | 110 120 160
+| BD diastolisch (mmHg)| 70 72 80
+| LVOT VTI (cm) | 18.0 19.0 16.0
+| MV E vel | 80 95
+| MV A vel | 50 70
+| E' lat | 9 11
+| E/E' lat | 8.9 8.6
+| E/A ratio | 1.6 1.4
+| TRPG (mmHg) | 10.0 16.0 24.0
+| Fontan (mmHg) | 11.0 16.0 21.5
+| SV (ml) | 56.5 60.0 50.0
+| CO (L/min) | 4.0 5.3 7.5
+| HFA-PEFF score | 1
+--------------------------------------------------------------
+
+Centrale en perifere hemodynamiek:
+----------------------------------
+Pulmonale circulatie
+
+* mPAP rust (mmHg): 11.0
+* mPAP peak (mmHg): 21.5
+* mPAP/CO slope (mmHg/L/min): 3.0
+
+Cardiac output
+
+* Peak exercise SVi: 29
+* Peak CO by Agostoni (% predicted): 60.0
+* Peak CO by Boston (% predicted): 55.0
+* CO reserve by Mayo (% predicted): 70.0
+
+Perifeer
+
+* dCO/dVO2: 3.5
+* A-V O2 Diff peak (ml/dl): 14.5
+* A-V O2 Diff peak / Hb (ml/g): 1.1
+* Gemengd veneuze Saturatie (%): 32
+
+Kleppen:
+--------
+Commentaar: MI 1/4 stabiel tijdens inspanning
+Repolarisatiestoornissen: niet aanwezig
+Aritmieën: niet aanwezig
+Besluit:
+--------
+
+* Uitvoering van de test: maximaal (RER meer dan 1,05)
+* Inspanningsvermogen: matig verminderd
+* Ventilatoire reserve: normaal (VE/MVV <= 0.8)
+* Ventilatoire klasse: II (VE/VCO2 slope >= 30 en < 36)
+* LV systolische functie in rust: normaal (> 55%)
+
+Goede Fontan circulatie. Patente connecties.
+Desaturatie bij inspanning.

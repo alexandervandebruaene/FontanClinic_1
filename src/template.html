@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FontanClinic — raadpleging</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫀</text></svg>">
+<style>
+:root{
+  --paper:#F2F4F6; --panel:#FFFFFF; --ink:#1B2733; --muted:#5D6A77; --rule:#D6DDE3; --soft:#E9EDF1;
+  --accent:#1F5C8C; --accent-ink:#FFFFFF; --focus:#3B82C4;
+  --abn:#B23A3A; --warn:#B7791F; --ok:#2F7A4F; --na:#A3ACB5;
+  --abn-bg:#FBEFEF; --warn-bg:#FCF4E6; --ok-bg:#EEF6F1;
+  --radius:6px;
+  font-family:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:14px; color:var(--ink); background:var(--paper); color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121820; --panel:#1A222C; --ink:#E4E9EE; --muted:#98A5B2; --rule:#2D3945; --soft:#222C37;
+  --accent:#6FA8D6; --accent-ink:#0E1620; --abn:#E07A7A; --warn:#E0A85A; --ok:#6CC091; --na:#5F6B77;
+  --abn-bg:#3A2224; --warn-bg:#3A2F1E; --ok-bg:#1D3326;}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper)}
+body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* header */
+header.top{position:sticky;top:0;z-index:5;background:var(--panel);border-bottom:1px solid var(--rule);padding:10px 20px 0}
+.row1{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.brand{font-weight:650;font-size:16px;letter-spacing:-.01em;margin-right:6px}
+.brand small{font-weight:400;color:var(--muted);margin-left:6px}
+.id{display:flex;align-items:center;gap:6px}
+.id label{color:var(--muted);font-size:12.5px}
+.id input{border:1px solid var(--rule);background:var(--panel);border-radius:var(--radius);padding:5px 8px;width:130px;font-variant-numeric:tabular-nums}
+.id input[type=date]{width:150px}
+.search{flex:1;min-width:200px;max-width:360px;position:relative}
+.search input{width:100%;border:1px solid var(--rule);border-radius:999px;padding:6px 12px 6px 30px;background:var(--soft)}
+.search::before{content:"";position:absolute;left:11px;top:50%;width:9px;height:9px;border:1.6px solid var(--muted);border-radius:50%;transform:translateY(-62%)}
+.search::after{content:"";position:absolute;left:20px;top:58%;width:5px;height:1.6px;background:var(--muted);transform:rotate(45deg)}
+.search kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);font-family:inherit}
+.actions{display:flex;gap:8px;margin-left:auto}
+
+/* circuit tabs */
+nav#tabs{display:flex;gap:0;margin-top:10px;overflow-x:auto;scrollbar-width:thin}
+.tab{border:0;background:none;padding:9px 13px 10px;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;position:relative}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.tab.circ{padding-left:22px}
+.tab.circ::before{content:"";position:absolute;left:8px;top:50%;width:8px;height:8px;border-radius:50%;transform:translateY(-58%);background:var(--na)}
+.tab.circ.s-abn::before{background:var(--abn)} .tab.circ.s-warn::before{background:var(--warn)} .tab.circ.s-ok::before{background:var(--ok)}
+.tab.circ + .tab.circ{margin-left:14px}
+.tab.circ + .tab.circ::after{content:"";position:absolute;left:-13px;top:50%;width:12px;height:0;border-top:1.5px solid var(--rule);transform:translateY(-1px)}
+.tab.circ + .tab.circ > *{}
+
+/* layout */
+main{max-width:1280px;margin:0 auto;padding:16px 20px 60px}
+details#pastePanel{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:12px}
+details#pastePanel > summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none;display:flex;gap:12px;align-items:baseline}
+details#pastePanel > summary::-webkit-details-marker{display:none}
+details#pastePanel > summary::before{content:"▸";color:var(--muted);transition:transform .15s}
+details#pastePanel[open] > summary::before{transform:rotate(90deg)}
+#parseSummary{font-weight:400;color:var(--muted)}
+.pastebody{padding:0 14px 14px}
+.srcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.srccard{display:flex;flex-direction:column;gap:5px;border:1px solid var(--rule);border-radius:var(--radius);padding:8px 10px 10px;background:var(--panel)}
+.srccard.done{border-color:var(--ok);box-shadow:inset 3px 0 0 var(--ok)}
+.srchead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.srchead label{font-weight:600;font-size:13px}
+.srcstat{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.srccard textarea{width:100%;min-height:96px;border:1px solid var(--rule);border-radius:var(--radius);padding:7px 8px;font-family:ui-monospace,Consolas,monospace;font-size:11.5px;background:var(--soft);resize:vertical}
+.chipsum{display:inline-block;font-size:12px;font-weight:500;background:var(--ok-bg);color:var(--ok);border-radius:999px;padding:1px 9px;margin-right:6px}
+.pdot.prev{background:var(--accent)}
+.muted{color:var(--muted);font-weight:400}
+.dbox.srcbox{grid-column:1/-1}
+ul#notes{margin:0 0 12px;padding:0;list-style:none}
+ul#notes li{background:var(--warn-bg);border-left:3px solid var(--warn);padding:6px 10px;margin-bottom:4px;border-radius:0 var(--radius) var(--radius) 0;font-size:13px}
+#view{outline:none}
+
+/* buttons */
+.btn{border:1px solid var(--rule);background:var(--panel);border-radius:var(--radius);padding:6px 12px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.ghost{background:none}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.file{display:inline-block}
+
+/* fields */
+.group{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:12px 14px 14px;margin-bottom:12px}
+.group h3{margin:0 0 10px;font-size:13px;font-weight:650;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
+.field{display:flex;flex-direction:column;gap:3px;min-width:0}
+.field.wide{grid-column:1/-1}
+.field label{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.fdom{margin-left:auto;font-size:11px;color:var(--accent)}
+.field input,.field select,.field textarea{border:1px solid var(--rule);border-radius:var(--radius);padding:5px 8px;background:var(--panel);min-width:0;width:100%}
+.field textarea{resize:vertical;min-height:52px}
+.field.cpet input{background:var(--soft)}
+.numwrap{display:flex;align-items:stretch}
+.numwrap input{font-variant-numeric:tabular-nums;text-align:right;border-top-right-radius:0;border-bottom-right-radius:0}
+.numwrap .unit{border:1px solid var(--rule);border-left:0;border-radius:0 var(--radius) var(--radius) 0;padding:5px 7px;font-size:11.5px;color:var(--muted);background:var(--soft);white-space:nowrap;display:flex;align-items:center}
+.numwrap input:only-child{border-radius:var(--radius)}
+input.invalid{border-color:var(--abn)!important;background:var(--abn-bg)!important}
+.pdot{display:inline-block;width:7px;height:7px;border-radius:50%;flex:none;background:var(--ok);vertical-align:middle}
+.pdot.ambiguous{background:var(--warn);box-shadow:0 0 0 2px var(--warn-bg)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--rule);background:var(--panel);border-radius:999px;padding:3px 11px;cursor:pointer;font-size:13px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+details.sub{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);margin-bottom:10px}
+details.sub > summary{padding:10px 14px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:8px}
+details.sub > .group{border:0;border-top:1px solid var(--soft);border-radius:0;margin:0}
+
+/* overview */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
+.metric{background:var(--panel);padding:10px 14px}
+.mv{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.ml{font-size:12px;color:var(--muted)} .ml span{color:var(--accent)}
+.domains{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.dbox{background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--na);border-radius:var(--radius);padding:10px 14px}
+.dbox.s-abn{border-left-color:var(--abn)} .dbox.s-warn{border-left-color:var(--warn)} .dbox.s-ok{border-left-color:var(--ok)}
+.dbox h3{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:7px}
+.dbox ul{list-style:none;margin:0;padding:0}
+.dbox li{display:flex;gap:8px;padding:5px 0;border-top:1px solid var(--soft);font-size:13px;line-height:1.4}
+.dbox li:first-child{border-top:0}
+.dbox li b{font-weight:600}
+.dbox li small{display:block;color:var(--muted);font-size:12px}
+.dbox li.s-warn{background:var(--warn-bg);margin:0 -8px;padding:5px 8px;border-radius:4px}
+.sdot{width:9px;height:9px;border-radius:50%;flex:none;margin-top:4px;background:var(--na)}
+h3 .sdot,summary .sdot{margin-top:0}
+.sdot.s-info{background:var(--na)} .sdot.s-abn{background:var(--abn)} .sdot.s-warn{background:var(--warn)} .sdot.s-ok{background:var(--ok)}
+details.lab{margin-top:12px;background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:8px 14px}
+details.lab summary{cursor:pointer;color:var(--muted)}
+details.lab pre{white-space:pre-wrap;font-size:12.5px;font-family:inherit}
+.empty{border:1px dashed var(--rule);border-radius:var(--radius);padding:18px;color:var(--muted);margin-bottom:14px;background:var(--panel)}
+
+/* letter */
+.letterbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+#letterText{width:100%;min-height:62vh;border:1px solid var(--rule);border-radius:var(--radius);padding:16px 18px;background:var(--panel);font-family:Arial,sans-serif;font-size:13.5px;line-height:1.55;resize:vertical;max-width:900px;display:block}
+.hint{color:var(--muted);font-size:12.5px;margin:4px 0 10px}
+.hint.warn{color:var(--warn)}
+ul.plain{margin:0;padding-left:18px;line-height:1.7}
+code{font-size:12px;background:var(--soft);padding:1px 4px;border-radius:3px}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;font-size:13px;z-index:20}
+.toast.show{opacity:1;transform:translate(-50%,0)} .toast.bad{background:var(--abn);color:#fff}
+@media (max-width:720px){header.top{position:static;padding:8px 12px 0} main{padding:12px} .actions{margin-left:0} .id input{width:110px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{header.top,#pastePanel,#notes,.letterbar,.hint{display:none} #letterText{border:0;min-height:auto}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="row1">
+    <div class="brand">FontanClinic<small>raadpleging</small></div>
+    <div class="id"><label for="hdrEad">EAD</label><input id="hdrEad" autocomplete="off" inputmode="numeric"></div>
+    <div class="id"><label for="hdrDate">Datum</label><input id="hdrDate" type="date"></div>
+    <div class="search"><input id="search" type="search" placeholder="Zoek veld: ferr, varices, pvp…" aria-label="Zoek veld" autocomplete="off"><kbd>Ctrl K</kbd></div>
+    <div class="actions">
+      <label class="btn file" title="Neemt anatomie, voorgeschiedenis en planning over uit de Excel-file van het vorige bezoek">Vorig bezoek laden<input type="file" id="prevFile" accept=".xlsx" hidden></label>
+      <button class="btn ghost" id="btnReset">Nieuw bezoek</button>
+    </div>
+  </div>
+  <nav id="tabs" role="tablist" aria-label="Domeinen"></nav>
+</header>
+<main>
+  <details id="pastePanel" open>
+    <summary>Bronverslagen <span id="parseSummary"></span></summary>
+    <div class="pastebody">
+      <div id="srcGrid" class="srcgrid"></div>
+      <p class="hint">Plakken leest meteen in. Staan meerdere verslagen in één vak, dan worden ze herkend en elk apart ingelezen. <span class="pdot parsed"></span> ingelezen · <span class="pdot ambiguous"></span> voorstel, controleren · <span class="pdot prev"></span> vorig bezoek</p>
+    </div>
+  </details>
+  <ul id="notes"></ul>
+  <div id="view" tabindex="-1"></div>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+/*__CORE__*/
+</script>
+<script>
+/*__REPORTS__*/
+</script>
+<script>
+/*__OFFICE__*/
+</script>
+<script>
+/*__UI__*/
+</script>
+</body>
+</html>
